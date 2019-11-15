@@ -40,43 +40,49 @@ def QLearning():
             # Q[statex, statey] = R[statex, statey] + GAMMA * getMaxQ(statex, statey)
             #这两个公式基本等价，最后收敛的Q是一样的
 
-Q[1,5] = (1-ALPHA)*Q[1,5] + ALPHA* (R[1,5]+GAMMA * getMaxQ(1,5))
-print(Q[1,5])
 
-#input()
-print("====================")
-print("map:")
-print(R)
-count = 0    
-while count < num_steps:
-    QLearning()
-    count += 1
-
-print(Q)  
-
-
-
-# 验证
-
-for i in range(10):
-    print("第{}次验证".format(i + 1))
-    state = random.randint(0, 5)
-    print('机器人处于{}'.format(state))
+def train():
+    #input()
+    print("====================")
+    print("map:")
+    print(R)
     count = 0
-    while state != 5:
-        if count > 20:
-            print('fail')
-            break
-        # 选择最大的q_max
-        q_max = Q[state].max()
-
-        q_max_action = []
-        for action in range(6):
-            if Q[state, action] == q_max:
-                q_max_action.append(action)
-
-        next_state = q_max_action[random.randint(0, len(q_max_action) - 1)]
-        print("the robot goes to " + str(next_state) + '.')
-        state = next_state
+    while count < num_steps:
+        QLearning()
         count += 1
+    print(Q)
+
+def test():
+    # 验证
+    for i in range(10):
+        print("第{}次验证".format(i + 1))
+        state = random.randint(0, 5)
+        print('机器人处于{}'.format(state))
+        count = 0
+        while state != 5:
+            if count > 20:
+                print('fail')
+                break
+            # 选择最大的q_max
+            q_max = Q[state].max()
+
+            q_max_action = []
+            for action in range(6):
+                if Q[state, action] == q_max:
+                    q_max_action.append(action)
+
+            next_state = q_max_action[random.randint(0, len(q_max_action) - 1)]
+            print("the robot goes to " + str(next_state) + '.')
+            state = next_state
+            count += 1
+
+def demo():
+    Q[1,5] = (1-ALPHA)*Q[1,5] + ALPHA* (R[1,5]+GAMMA * getMaxQ(1,5))
+    print(Q[1,5])
+
+if __name__=="__mian__":
+    train()
+
+
+
 
